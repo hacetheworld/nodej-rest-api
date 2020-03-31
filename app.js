@@ -1,9 +1,16 @@
 const express = require('express');
 const app = express();
 const morgan = require('morgan');
+const mongoose = require('mongoose');
+const productRoutes = require('./api/routes/products')
+const orderRoutes = require('./api/routes/orders')
+const uri = 'mongodb://localhost:27017/rest-api'
 
-const productRoutes = require('./routes/products');
-const orderRoutes = require('./routes/orders');
+// conncet to database
+mongoose.connect(uri, { useUnifiedTopology: true, useNewUrlParser: true })
+
+
+
 // Built in middeware in express
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
