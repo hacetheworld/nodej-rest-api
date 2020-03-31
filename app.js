@@ -4,8 +4,25 @@ const morgan = require('morgan');
 
 const productRoutes = require('./routes/products');
 const orderRoutes = require('./routes/orders');
+// Built in middeware in express
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
+// logging middleware
 app.use(morgan('dev'))
+
+//Add heders
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Header', '*');
+    if (req.method === 'OPTIONS') {
+        req.header('Access-Control-Allow-Methods', 'POST,PUT,PATCH,DELETE,GET');
+        return res.status(200).json({});
+    }
+    next();
+})
+
+
 // Routes
 app.use('/products', productRoutes);
 app.use('/orders', orderRoutes);
