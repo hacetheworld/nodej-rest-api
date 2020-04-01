@@ -2,7 +2,11 @@ const express = require('express');
 const mongoose = require('mongoose');
 const router = express.Router();
 const Order = require('../models/order');
-router.get('/', (req, res, next) => {
+const checkAuth = require("../middleware/check-auth");
+
+
+
+router.get('/', checkAuth, (req, res, next) => {
     Order.find({})
         .select('name quantity product _id')
         .exec()
@@ -30,7 +34,7 @@ router.get('/', (req, res, next) => {
 
 });
 
-router.post('/', (req, res, next) => {
+router.post('/', checkAuth, (req, res, next) => {
     const order = new Order({
         name: req.body.name,
         product: mongoose.Types.ObjectId(req.body.product),
@@ -46,7 +50,7 @@ router.post('/', (req, res, next) => {
 
 });
 
-router.get(`/:orderId`, (req, res, next) => {
+router.get(`/:orderId`, checkAuth, (req, res, next) => {
     const orderId = mongoose.Types.ObjectId(req.params.orderId)
     Order.findById(orderId)
         .exec()
@@ -89,7 +93,7 @@ router.get(`/:orderId`, (req, res, next) => {
 // });
 
 // Delete method
-router.delete(`/:orderId`, (req, res, next) => {
+router.delete(`/:orderId`, checkAuth, (req, res, next) => {
     const orderId = mongoose.Types.ObjectId(req.params.orderId)
     Order.deleteOne({ "_id": orderId })
         .exec()
