@@ -2,6 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const router = express.Router();
 const Product = require('../models/product');
+
+
 router.get('/', (req, res, next) => {
     Product.find({})
         .select('name price _id')
@@ -30,16 +32,21 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/', (req, res, next) => {
+
     const product = new Product({
         name: req.body.name,
-        price: req.body.price
+        price: req.body.price,
+
     });
+    console.log(req.body.name, req.body.price);
+
     product.save()
         .then(product => {
             res.status(200).json({
                 msg: `Product Created...`,
                 product
             });
+
         }).catch(err => res.status(500).json({ error: err }))
 
 });

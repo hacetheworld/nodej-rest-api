@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 const productRoutes = require('./api/routes/products')
 const orderRoutes = require('./api/routes/orders')
+const userRoutes = require('./api/routes/user')
 const uri = 'mongodb://localhost:27017/rest-api'
 
 // conncet to database
@@ -33,6 +34,7 @@ app.use((req, res, next) => {
 // Routes
 app.use('/products', productRoutes);
 app.use('/orders', orderRoutes);
+app.use('/user', userRoutes);
 
 //Fallback routes
 
